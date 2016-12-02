@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src:['public/client/**/*.js'],
-        dest: 'public/dist/build.js'
+        dest: 'public/dist/<%= pkg.name %>.js'
       }
     },
 
@@ -20,8 +20,6 @@ module.exports = function(grunt) {
         src: ['test/**/*.js']
       }
     },
-    
-    clean: ['public/dist/'],
 
     nodemon: {
       dev: {
@@ -32,7 +30,7 @@ module.exports = function(grunt) {
     uglify: {
       dest: {
         files: {
-          'public/dist/shortly-deploy.min.js': ['public/dist/build.js']
+          'public/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -41,11 +39,12 @@ module.exports = function(grunt) {
     eslint: {
       target: [
         // Add list of files to lint here
-        'public/**/*.js',
         'Gruntfile.js',
         'app/**/*.js',
         'public/**/*.js',
         'lib/**/*.js',
+        './*.js',
+        'spec/**/*.js'
       ]
     },
 
@@ -57,6 +56,8 @@ module.exports = function(grunt) {
         }]
       }
     },
+
+    clean: ['public/dist/*.js'],
 
     watch: {
       scripts: {
@@ -77,7 +78,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-        command: 'git push live master'
+        command: 'git push live master',
         options: {
           stdout: true,
           stderr: true,
@@ -110,7 +111,6 @@ module.exports = function(grunt) {
     'eslint'
   ]);
 
-  grunt.registerTask('clear', ['clean']);
 
   grunt.registerTask('build', ['clean', 'concat', 'uglify', 'cssmin'
   ]);
@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
-    'test','build', 'upload'
+    'test', 'build', 'upload'
   ]);
 
 
