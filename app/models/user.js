@@ -21,14 +21,14 @@ userSchema.pre('save', function(next) {
 });
 
 User.prototype.comparePassword = function(attemptedPassword, callback) {
-    bcrypt.compare(attemptedPassword, this.password, function(err, isMatch) {
-      if(err){
-        callback(err);
-      }else{
-        callback(null, isMatch);
-      }
-    });
-  },
+  bcrypt.compare(attemptedPassword, this.password, function(err, isMatch) {
+    if(err){
+      callback(err);
+    }else{
+      callback(null, isMatch);
+    }
+  });
+},
 
 // var User = db.Model.extend({
 //   tableName: 'users',
